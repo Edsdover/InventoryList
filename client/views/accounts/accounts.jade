@@ -1,17 +1,17 @@
-h3 Inventory
 
 .row
-  .col-xs-6.col-xs-offset-3
+  .col-xs-6
+    h3 Inventory
     form(name='accountTypeForm', novalidate)
       .form-group
-        label Add Room
+        label Enter a room to add a Inventory list
         input.form-control#accountName(type='text', name='accountName', ng-model='accountName')
-        button.btn.btn-default.center-block(type='submit', ng-click='addAccount(accountName)') Add
-        p __________________________________________________________________________
-.row
-  .col-xs-4.col-xs-offset-4
+        button.btn.btn-primary(type='submit', ng-click='addAccount(accountName)') Add Room
+        p(ng-repeat='name in names track by $index') {{name}}
+  .col-xs-6
     form(name='transactionForm', novalidate)
       .form-group
+        h3 Add Items to Inventory
         label Select Room:
         select.form-control#accountType(name='accountType', ng-model='item.type')
           option(ng-repeat='name in names track by $index') {{name}}
@@ -28,30 +28,36 @@ h3 Inventory
         label Date Purchased
         input.form-control(type='date', ng-model='item.date')
       .form-group
-        button.btn.btn-success.center-block(type='submit', ng-click='addTransaction(item.type, item)') Add Item
+        button.btn.btn-success(type='submit', ng-click='addTransaction(item.type, item)') Add Item
+.row
+  .col-xs-3
+    button.btn.btn-info(ng-click='isTableRead = !isTableRead') Show Table
+    label Select Room List
+    select.form-control#accountType(name='accountType', ng-model='item.type')
+      option(ng-repeat='name in names track by $index') {{name}}
+.row
   .col-xs-12
-    button.btn.btn-info.center-block(ng-click='isTableRead = !isTableRead') Show Table
-  table.table.table-striped(ng-show='isTableRead', ng-repeat='(key, value) in afUser.accounts')
+  table.table.table-striped.table-hover(ng-show='isTableRead', ng-repeat='(key, value) in afUser.accounts')
     thead
       tr
-        th Delete
-        th Edit
-        th Room
         th Item
-        th # of Items
-        th Cost
-        th Total Cost
-        th Date Purchased
+        th Room
+        th Number of Items
+        th Retail Price
+        th Purchase Date
+        th Edit
+        th Delete
     tbody
-      
       tr(ng-repeat='item in afUser.accounts[key]')
-        td: button.btn.btn-danger.btn-xs(ng-click='deleteTransaction(item, $index)') Delete
-        td: button.btn.btn-warning.btn-xs(ng-click='editTransaction(item, $index)') Edit
-        td {{item.type}}
         td {{item.item}}
+        td {{item.type}}
         td {{item.amount}}
-        td {{item.cost}}
-        td {{item.cost * item.amount | currency}}
-        td {{item.date | date: 'MM-dd-yyyy'}}   
-    td Total: {{total(afUser.accounts[key]) | currency}}
-        
+        td {{item.cost | currency}}
+        td {{item.date | date: 'MM-dd-yyyy'}}
+        td: button.btn.btn-warning.btn-xs(ng-click='editTransaction(item, $index)') Edit
+        td: button.btn.btn-danger.btn-xs(ng-click='deleteTransaction(item, $index)') Delete
+    td List Total: {{total(afUser.accounts[key]) | currency}}
+    
+    
+    
+    
