@@ -1,0 +1,57 @@
+h3 Inventory
+
+.row
+  .col-xs-6.col-xs-offset-3
+    form(name='accountTypeForm', novalidate)
+      .form-group
+        label Add Room
+        input.form-control#accountName(type='text', name='accountName', ng-model='accountName')
+        button.btn.btn-default.center-block(type='submit', ng-click='addAccount(accountName)') Add
+        p __________________________________________________________________________
+.row
+  .col-xs-4.col-xs-offset-4
+    form(name='transactionForm', novalidate)
+      .form-group
+        label Select Room:
+        select.form-control#accountType(name='accountType', ng-model='item.type')
+          option(ng-repeat='name in names track by $index') {{name}}
+      .form-group
+        label Item name
+        input.form-control(type='text', ng-model='item.item')
+      .form-group
+        label # of items
+        input.form-control(type='number', ng-model='item.amount')
+      .form-group
+        label Cost
+        input.form-control(type='number', ng-model='item.cost')
+      .form-group
+        label Date Purchased
+        input.form-control(type='date', ng-model='item.date')
+      .form-group
+        button.btn.btn-success.center-block(type='submit', ng-click='addTransaction(item.type, item)') Add Item
+  .col-xs-12
+    button.btn.btn-info.center-block(ng-click='isTableRead = !isTableRead') Show Table
+  table.table.table-striped(ng-show='isTableRead', ng-repeat='(key, value) in afUser.accounts')
+    thead
+      tr
+        th Delete
+        th Edit
+        th Room
+        th Item
+        th # of Items
+        th Cost
+        th Total Cost
+        th Date Purchased
+    tbody
+      
+      tr(ng-repeat='item in afUser.accounts[key]')
+        td: button.btn.btn-danger.btn-xs(ng-click='deleteTransaction(item, $index)') Delete
+        td: button.btn.btn-warning.btn-xs(ng-click='editTransaction(item, $index)') Edit
+        td {{item.type}}
+        td {{item.item}}
+        td {{item.amount}}
+        td {{item.cost}}
+        td {{item.cost * item.amount | currency}}
+        td {{item.date | date: 'MM-dd-yyyy'}}   
+    td Total: {{total(afUser.accounts[key]) | currency}}
+        
